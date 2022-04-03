@@ -1,0 +1,25 @@
+{% extends "ecom/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Pizza-Hub | Login{% endblock %}
+
+{% block fbgnav %}
+    nav-fbg
+{% endblock %}
+
+{% block content %}
+<div class="lr-form">
+    <span class="lrhead">Login</span>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Submit">
+    </form>
+    <a href="{% url 'password_reset' %}">Forgot Password?</a>
+    <p class="text-muted">
+        Need an Account? <a class="ml-2" href="{% url 'register' %}">Sign Up Now</a>
+    </p>
+</div>
+
+{% endblock %}

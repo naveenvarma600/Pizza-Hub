@@ -1,0 +1,136 @@
+{% extends "ecom/base.html" %}
+{% load static %}
+
+{% block title %}
+    Pizza-Hub | Search Results
+{% endblock %}
+
+{% block fbgnav %}
+    nav-fbg
+{% endblock %}
+
+{% block content %}
+
+    <div class="m-jumbo">
+        <h2 class="p2-heading">Search Results</h2>
+    </div>
+
+    <ul class="breadcrumb">
+        <em>Your search returned {{res|length}} result{{res|length|pluralize}}</em>
+    </ul>
+
+    <div class="second-part">
+
+        {% for product in res %}
+            <div class="card">
+                {% if product.image %}
+                <img src="{{product.image.url}}" alt="Avatar" style="width:100%">
+                {% else %}
+                <img src="{% static 'ecom/images/karthik-garikapati-oBbTc1VoT-0-unsplash.jpg' %}" alt="Avatar" style="width:100%">
+                {% endif %}
+                <div class="middle">
+                    <div id="cart-section-{{ product.pk }}" class="text">
+                        {% include 'ecom/add_to_cart_section.html' %}
+                    </div>
+                </div>
+                <div class="container">
+                    <h4>
+                        <b>{{product.item}}</b>
+                        <a style="margin-left: 10px;" href="{% url 'product-details' product.id %}"><i class="fas fa-external-link-alt "></i></a>
+                    </h4> 
+                    <p style="opacity: 0.5; margin-bottom: 24px;">{{product.description}}</p>
+                    <div id="like-section-{{ product.pk }}">
+                        {% include 'ecom/like_section.html' %}
+                    </div>
+                    <p>
+                        {% for i in product.rating %}
+                            {% if i == '1' %}
+                                <span class="fas fa-star f-star"></span>
+                            {% else %}
+                                <span class="far fa-star nf-star"></span>
+                            {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p class="c-subtext">₹ {{product.price}}/-</p> 
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+    <script type="text/javascript">
+
+        function toggleLike(x){
+            if(x.classList.contains('far'))
+            {
+                x.classList.remove('far')
+                x.classList.add('fas')
+            }
+            else
+            {
+                x.classList.remove('fas')
+                x.classList.add('far')
+            } 
+        }
+
+        function toggleCart(x){
+            if(x.classList.contains('fa-check-circle'))
+            {
+                x.classList.remove('fa-check-circle')
+                x.classList.add('fa-cart-plus')
+            }
+            else
+            {
+                x.classList.remove('fa-cart-plus')
+                x.classList.add('fa-check-circle')
+            } 
+        }
+
+        $(document).ready(function(event){
+
+            // LIKE POSTS
+
+            $(document).on('click','#like',function(event){
+                event.preventDefault();
+                var pk = $(this).attr('value');
+                $.ajax({
+                type: 'POST',
+                url: '{% url "product-like" %}',
+                data: {'id':pk, 'csrfmiddlewaretoken':'{{ csrf_token }}'},
+                dataType: 'json',
+                success: function(response){
+
+                },
+                error: function(rs, e){
+                    console.log(rs.responseText);
+                },
+                });
+            });
+
+            // CART
+
+            $(document).on('click','#atc',function(event){
+                event.preventDefault();
+                var pk = $(this).attr('value');
+                $.ajax({
+                type: 'POST',
+                url: '{% url "add-to-cart" %}',
+                data: {'id':pk, 'csrfmiddlewaretoken':'{{ csrf_token }}'},
+                dataType: 'json',
+                success: function(response){
+                    console.log("Item added to cart");
+                },
+                error: function(rs, e){
+                    console.log(rs.responseText);
+                },
+                });
+            });
+            
+        });
+    </script>
+
+{% endblock %}

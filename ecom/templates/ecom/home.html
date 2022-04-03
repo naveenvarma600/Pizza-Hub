@@ -1,0 +1,128 @@
+{% extends "ecom/base.html" %}
+{% load static %}
+
+{% block title %}
+    Pizza-Hub | Home
+{% endblock %}
+
+
+{% block content %}
+
+        <!-- FIRST PART -->
+
+        <div id="first-part">
+            <div class="left-content">
+                <p class="left-title">
+                    A Million Miles From Humdrum
+                </p>
+                <p class="left-para">
+                    The word Pizza comes from the latin root word "Picea" which means the blackening of crust by fire.
+                </p>
+                <br>
+                <p>
+                    <a class="btn-homepage" href="{% url 'menu' %}">Take a Bite</a>
+                </p>
+            </div>
+            <div class="right-content">
+                <img src="{% static 'ecom/images/mahyar-motebassem-pGA4zHvpo5E-unsplash.jpg' %}" alt="pizza-image">
+            </div>
+        </div>
+
+        <!-- SECOND PART -->
+
+        <div class="p1-headingWrap">
+            <h2 class="p1-heading">Customers' Top Picks</h2>
+        </div>
+        <div class="second-part">
+            {% for product in products %}
+            <div class="card">
+
+                {% if product.image %}
+                <img src="{{product.image.url}}" alt="Avatar" style="width:100%">
+                {% else %}
+                <img src="{% static 'ecom/images/karthik-garikapati-oBbTc1VoT-0-unsplash.jpg' %}" alt="Avatar" style="width:100%">
+                {% endif %}
+                
+                <div class="middle">
+                    <div class="text"><a href="{% url 'product-details' product.id %}"><i class="fas fa-external-link-alt"></i></a></div>
+                </div>
+                <div class="container">
+                    <h4><b>{{product.item}}</b></h4> 
+                    <p style="opacity: 0.5; margin-bottom: 24px;">{{product.description}}</p>
+                    <p>
+                        <!-- <i class="far fa-heart nf-heart"></i> -->
+                    </p>
+                    <p>
+                        {% for i in product.rating %}
+                            {% if i == '1' %}
+                                <span class="fas fa-star f-star"></span>
+                            {% else %}
+                                <span class="far fa-star nf-star"></span>
+                            {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p class="c-subtext">₹ {{product.price}}/-</p> 
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- THIRD PART -->
+
+        <div id="third-part">
+            <div class="t-left-part">
+                <img src="{% static 'ecom/images/e3.png' %}" alt="pizza-with-friends">
+            </div>
+            <div class="t-right-part">
+                Friends knocking at the door? Don't worry, we got you covered. Grab a coke and dive right into the Neapolitan perfection.
+            </div>
+        </div>
+
+        <!-- FOURTH PART -->
+
+        <div id="fourth-part">
+            <div class="t-left-part">
+                Customize your Pizza the way you want.
+                <br>
+                <div class="opt-show">
+                    <div class="opt-show-btn">🍄</div>
+                    <div class="opt-show-btn">🧀</div>
+                    <div class="opt-show-btn">🍅</div>
+                    <div class="opt-show-btn">🍗</div>
+                </div>
+            </div>
+            <div class="t-right-part">
+                <img src="{% static 'ecom/images/ep1.png' %}" alt="pizza">
+            </div>
+        </div>
+
+        <!-- FIFTH PART -->
+
+        <div class="p1-headingWrap">
+            <h2 class="p1-heading">3-Steps to get Cheesy</h2>
+        </div>
+        <div class="tcrds">
+            <div id="tcrd1">
+                <div class="tcrdimg">
+                    <i class="fas fa-truck"></i>
+                </div>
+                <span style="font-family:'lobster'; padding-bottom: 12px; font-weight:500; font-size: 2rem;">Order</span>
+                <span style="color: rgba(255, 255, 255, 0.7);">Lorem ipsum dolor sit, amet </span>
+            </div>
+            <div id="tcrd2">
+                <div class="tcrdimg">
+                    <i class="fas fa-money-check-alt"></i>
+                </div>
+                <span style="font-family:'lobster';padding-bottom: 12px; font-weight:500; font-size: 2rem;">Cook and Deliver</span>
+                <span style="color: rgba(255, 255, 255, 0.7);">Lorem ipsum dolor sit, amet </span>
+            </div>
+            <div id="tcrd3">
+                <div class="tcrdimg">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <span style="font-family:'lobster';padding-bottom: 12px; font-weight:500; font-size: 2rem;">Enjoy</span>
+                <span style="color: rgba(255, 255, 255, 0.7);">Lorem ipsum dolor sit, amet </span>
+            </div>
+        </div>
+
+{% endblock %}

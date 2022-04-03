@@ -1,0 +1,86 @@
+{% extends "ecom/base.html" %}
+
+{% block title %}
+    Pizza-Hub | Wishlist
+{% endblock %}
+
+{% block fbgnav %}
+    nav-fbg
+{% endblock %}
+
+{% block content %}
+
+    <!-- FIRST PART -->
+
+    <div class="m-jumbo">
+        <h2 class="p2-heading">Wishlist</h2>
+    </div>
+
+    <!-- SECOND PART -->
+
+    
+    <div id="wishlist-p" >
+        {% include 'ecom/wishlist_section.html' %}
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+
+    <script type="text/javascript">
+
+        function toggleCart(x){
+            if(x.classList.contains('fa-check-circle'))
+            {
+                x.classList.remove('fa-check-circle')
+                x.classList.add('fa-cart-plus')
+            }
+            else
+            {
+                x.classList.remove('fa-cart-plus')
+                x.classList.add('fa-check-circle')
+            } 
+        }
+
+        $(document).ready(function(event){
+        
+            // REMOVE FROM WISHLIST
+
+            $(document).on('click','#like',function(event){
+                event.preventDefault();
+                var pk = $(this).attr('value');
+                $.ajax({
+                type: 'POST',
+                url: '{% url "wishlist-remove" %}',
+                data: {'id':pk, 'csrfmiddlewaretoken':'{{ csrf_token }}'},
+                dataType: 'json',
+                success: function(response){
+                    $(`#wishlist-p`).html(response["form"]);
+                },
+                error: function(rs, e){
+                    console.log(rs.responseText);
+                },
+                });
+            });
+
+            $(document).on('click','#atc',function(event){
+                event.preventDefault();
+                var pk = $(this).attr('value');
+                $.ajax({
+                type: 'POST',
+                url: '{% url "add-to-cart" %}',
+                data: {'id':pk, 'csrfmiddlewaretoken':'{{ csrf_token }}'},
+                dataType: 'json',
+                success: function(response){
+                    console.log("Item added to cart");
+                },
+                error: function(rs, e){
+                    console.log(rs.responseText);
+                },
+                });
+            });
+            
+        });
+    </script>
+
+{% endblock %}

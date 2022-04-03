@@ -1,0 +1,27 @@
+{% extends "ecom/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Pizza-Hub | Register{% endblock %}
+
+{% block fbgnav %}
+    nav-fbg
+{% endblock %}
+
+{% block content %}
+<div class="lr-form">
+    <span class="lrhead">Join Today</span>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+        <div class="g-recaptcha" data-sitekey="6Lc6oUkaAAAAANkQnN5HaqEaDix1IvP7vkJSA1Zv"></div>
+        <br>
+        <input type="submit" value="Sign Up">
+    </form>
+    <a href="{% url 'password_reset' %}">Forgot Password?</a>
+    <p class="text-muted">
+        Already Have an Account? <a class="ml-2" href="{% url 'login' %}">Sign In</a>
+    </p>
+</div>
+
+{% endblock %}
